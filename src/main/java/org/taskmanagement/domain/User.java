@@ -15,4 +15,13 @@ public class User {
     private String password;
     private String role;
     private List<Task> tasks;
+
+
+
+    public void addTaskToList(Task task){
+        if (tasks == null){
+            tasks = List.of(task);
+        }
+        else tasks.add(task);
+    }
 }

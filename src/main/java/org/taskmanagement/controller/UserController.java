@@ -43,8 +43,12 @@ public class UserController {
     {
         log.trace("Calling POST /users/{username} endpoint.");
         User user = userRepository.findByUsername(username);
-        TASK.add(task);
-        user.getTasks().add(task);
+
+        task.createAssignedList(user);
+        //TASK.add(task);
+
+        user.addTaskToList(task);
+
     }
 
 }

@@ -17,4 +17,8 @@ public class Task {
     private List<User> assignedUser;
     private Comment comment;
    // private Project project;
+
+    public void createAssignedList(User user){
+        assignedUser = List.of(user);
+    }
 }
