@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Project {
-    private Long id;
+    private int id;
     private String title;
     private List<Task> tasks;
     private List<User> assignedUsers;

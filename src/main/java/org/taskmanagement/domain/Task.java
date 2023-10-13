@@ -9,11 +9,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class Task {
-    private Long id;
+    private int id;
     private String title;
     private LocalDate dueDate;
     private String status;
     private Integer priority;
-    private User assignedUser;
-    private Project project;
+    private List<User> assignedUser;
+    private Comment comment;
+   // private Project project;
 }
