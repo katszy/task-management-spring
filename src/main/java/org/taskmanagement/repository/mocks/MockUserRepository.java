@@ -39,7 +39,7 @@ public class MockUserRepository implements UserRepository {
     }
 
     @Override
-    public List<Task> viewTaskByUser(String username) {
+    public List<Task> viewTasksByUser(String username) {
         Optional<User> userOptional = USERS.stream()
                 .filter(user -> username.equals(user.getUsername()))
                 .findFirst();

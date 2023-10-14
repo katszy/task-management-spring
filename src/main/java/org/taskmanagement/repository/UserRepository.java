@@ -8,6 +8,6 @@ import java.util.List;
 public interface UserRepository {
     List<User> findAll();
     User findByUsername(String username);
-    List<Task> viewTaskByUser(String username);
+    List<Task> viewTasksByUser(String username);
     void assignTask(User user, Task task);
 }

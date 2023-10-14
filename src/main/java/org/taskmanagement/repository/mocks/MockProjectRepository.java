@@ -35,20 +35,10 @@ public class MockProjectRepository implements ProjectRepository {
             Project project = projectOptional.get();
             projectTasks = project.getTasks();
         } else {
-            log.warn("No such project");
+            log.warn("No such project exists");
         }
         return projectTasks;
-
     }
-/*
-    @Override
-    public Project viewProject(int projectId) {
-        Optional<Project> projectOptional = PROJECT.stream()
-                .filter(proj->proj.getId()==projectId)
-                .findFirst();
-
-        return projectOptional.orElse(null);
-    }*/
 
     @Override
     public void createProject(Project project) {
@@ -57,4 +47,12 @@ public class MockProjectRepository implements ProjectRepository {
         PROJECT = List.copyOf(projectList);
     }
 
+    @Override
+    public Project viewProject(int projectId) {
+        Optional<Project> projectOptional = PROJECT.stream()
+                .filter(proj->proj.getId()==projectId)
+                .findFirst();
+
+        return projectOptional.orElse(null);
+    }
 }

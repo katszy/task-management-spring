@@ -35,7 +35,7 @@ public class UserController {
     public List<Task> getTasksByUsername(@PathVariable("username") String username)
     {
         log.trace("Calling GET /users/{username}/tasks endpoint.");
-        return userRepository.viewTaskByUser(username);
+        return userRepository.viewTasksByUser(username);
     }
 
     @PostMapping("/users/{username}/")
@@ -43,11 +43,7 @@ public class UserController {
     {
         log.trace("Calling POST /users/{username} endpoint.");
         User user = userRepository.findByUsername(username);
-        //if this user exists, assign the task to them, otherwise raise exception or something, todo
-        task.createAssignedUserList(user);
         userRepository.assignTask(user,task);
-        //TASK.add(task);
-
 
     }
 

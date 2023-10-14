@@ -13,5 +13,4 @@ public class Project {
     private int id;
     private String title;
     private List<Task> tasks;
-    //private List<User> assignedUsers;
 }

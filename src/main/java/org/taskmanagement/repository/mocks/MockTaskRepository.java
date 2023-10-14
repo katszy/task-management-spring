@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.taskmanagement.domain.Comment;
+import org.taskmanagement.domain.Project;
 import org.taskmanagement.domain.Task;
 import org.taskmanagement.domain.User;
 import org.taskmanagement.repository.TaskRepository;
@@ -11,6 +12,7 @@ import org.taskmanagement.repository.TaskRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.taskmanagement.repository.mocks.MockCommentRepository.COMMENT_1;
 import static org.taskmanagement.repository.mocks.MockUserRepository.USERS;
@@ -25,7 +27,6 @@ public class MockTaskRepository implements TaskRepository {
             LocalDate.of(2023, 10, 13),
             "started",
             1,
-            null,
             new ArrayList<>(List.of(COMMENT_1))
     );
     public static final Task TASK_2  = new Task(2,
@@ -33,11 +34,11 @@ public class MockTaskRepository implements TaskRepository {
             LocalDate.of(2023, 10, 23),
             "started",
             1,
-            USERS,
             null
     );
 
-   static List<Task> TASK = List.of(TASK_1, TASK_2);
+    static List<Task> TASK = new ArrayList<>(List.of(TASK_1, TASK_2));
+
 
     @Override
     public void modifyTaskAssignedUser(User user) {
@@ -56,12 +57,17 @@ public class MockTaskRepository implements TaskRepository {
 
     @Override
     public void createTask(Task task) {
-
+        TASK.add(task);
     }
 
     @Override
     public void deleteTask(int taskId) {
-
+        var deleted = TASK.removeIf(element -> element.getId()==taskId);
+        if (deleted) {
+            log.info("Deleting task");
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 
     @Override
