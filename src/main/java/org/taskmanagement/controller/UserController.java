@@ -7,7 +7,7 @@ import org.taskmanagement.domain.Task;
 import org.taskmanagement.domain.User;
 import org.taskmanagement.repository.UserRepository;
 import java.util.List;
-import static org.taskmanagement.repository.mocks.MockTaskRepository.TASK;
+//import static org.taskmanagement.repository.mocks.MockTaskRepository.TASK;
 
 @Slf4j
 @RestController
@@ -43,11 +43,11 @@ public class UserController {
     {
         log.trace("Calling POST /users/{username} endpoint.");
         User user = userRepository.findByUsername(username);
-
-        task.createAssignedList(user);
+        //if this user exists, assign the task to them, otherwise raise exception or something, todo
+        task.createAssignedUserList(user);
+        userRepository.assignTask(user,task);
         //TASK.add(task);
 
-        user.addTaskToList(task);
 
     }
 

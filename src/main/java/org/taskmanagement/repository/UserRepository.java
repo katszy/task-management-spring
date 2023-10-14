@@ -9,5 +9,5 @@ public interface UserRepository {
     List<User> findAll();
     User findByUsername(String username);
     List<Task> viewTaskByUser(String username);
-    void assignTask(String username, Task task);
+    void assignTask(User user, Task task);
 }

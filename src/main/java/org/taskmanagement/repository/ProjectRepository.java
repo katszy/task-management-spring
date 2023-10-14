@@ -7,9 +7,8 @@ import java.util.List;
 
 public interface ProjectRepository {
 
-    List<Task> viewTaskByProject(int projectId);
-    Project viewProject(int projectId);
+    List<Task> viewTasksByProject(int projectId);
+    //Project viewProject(int projectId);
     void createProject(Project project);
-    void deleteProject(int projectId);
 
 }

@@ -12,7 +12,7 @@ import org.taskmanagement.repository.CommentRepository;
 @RequiredArgsConstructor
 public class MockCommentRepository implements CommentRepository {
 
-    static public Comment COMMENT_1 = new Comment(1,"best gyros of my life",new User(4, "Ed", "ed@example.com", "pw", "user",null));
+    static public Comment COMMENT_1 = new Comment(1,"best gyros of my life");
 
     @Override
     public void addComment(Comment comment) {

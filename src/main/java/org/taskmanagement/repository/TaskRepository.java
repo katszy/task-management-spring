@@ -1,5 +1,6 @@
 package org.taskmanagement.repository;
 
+import org.taskmanagement.domain.Comment;
 import org.taskmanagement.domain.Task;
 import org.taskmanagement.domain.User;
 
@@ -12,7 +13,9 @@ public interface TaskRepository {
     void modifyTaskStatus(String status);
     void createTask(Task task);
     void deleteTask(int taskId);
-    List<Task> viewTaskByUser(String username);
+    List<Task> viewTaskByUser(String username); //move this to user?
+    List<Comment> viewTaskComments(int taskId);
+    void addTaskComments(int taskId, Comment comment);
 
 
 }

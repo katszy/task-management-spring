@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class Comment {
     private int id;
     private String text;
-    private User createdBy;
+    //private User createdBy;
     //private Task task;
 }

@@ -10,7 +10,7 @@ import org.taskmanagement.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 
-import static org.taskmanagement.repository.mocks.MockTaskRepository.TASK_1;
+//import static org.taskmanagement.repository.mocks.MockTaskRepository.TASK_1;
 
 @Repository
 @Slf4j
@@ -55,9 +55,15 @@ public class MockUserRepository implements UserRepository {
     }
 
     @Override
-    public void assignTask(String username, Task task) {
-        Optional<User> user_  = USERS.stream().filter(user -> username.equals(user.getUsername())).findFirst();
-        user_.get().getTasks().add(task);
+    public void assignTask(User username, Task task) {
+        Optional<User> userOptional  = USERS.stream().filter(user -> username.equals(user.getUsername())).findFirst();
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.addTaskToList(task);
+        } else {
+            log.warn("No such user");
+        }
     }
 
 }
