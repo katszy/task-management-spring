@@ -7,8 +7,13 @@ import org.taskmanagement.domain.Task;
 import org.taskmanagement.domain.User;
 import org.taskmanagement.repository.UserRepository;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import static org.taskmanagement.repository.mocks.MockTaskRepository.TASK;
+import static org.taskmanagement.repository.mocks.MockTaskRepository.TASK_1;
 
 //import static org.taskmanagement.repository.mocks.MockTaskRepository.TASK_1;
 
@@ -16,13 +21,12 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 public class MockUserRepository implements UserRepository {
-
-    static List<User> USERS = List.of(
-            new User(0, "Kata", "kat@example.com", "password123", "admin",null),
-            new User(1, "Katrin", "katrin@example.com", "securePass", "user",null),
-            new User(2, "Alexa", "alexa@example.com", "p@ssw0rd", "user",null),
-            new User(3, "Eniko", "eni@example.com", "adminPass123", "user",null)
-    );
+    static List<User> USERS = new ArrayList<>(Arrays.asList(
+            new User(0, "Kata", "kat@example.com", "password123", "admin", (ArrayList<Task>) TASK),
+            new User(1, "Katrin", "katrin@example.com", "securePass", "user", null),
+            new User(2, "Alexa", "alexa@example.com", "p@ssw0rd", "user", null),
+            new User(3, "Eniko", "eni@example.com", "adminPass123", "user", null)
+    ));
 
 
     @Override

@@ -4,18 +4,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.taskmanagement.domain.Comment;
-import org.taskmanagement.domain.Project;
 import org.taskmanagement.domain.Task;
-import org.taskmanagement.domain.User;
 import org.taskmanagement.repository.TaskRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.taskmanagement.repository.mocks.MockCommentRepository.COMMENT_1;
-import static org.taskmanagement.repository.mocks.MockUserRepository.USERS;
+
 
 @Repository
 @Slf4j
@@ -41,18 +40,29 @@ public class MockTaskRepository implements TaskRepository {
 
 
     @Override
-    public void modifyTaskAssignedUser(User user) {
+    public void modifyTaskPriority(int taskId, int priority) {
+        Optional<Task> taskToUpdate = TASK.stream()
+                .filter(task -> task.getId() == taskId)
+                .findFirst();
 
+        if (taskToUpdate.isPresent()) {
+            taskToUpdate.get().setPriority(priority);
+        } else {
+            throw new NoSuchElementException("Task not found");
+        }
     }
 
     @Override
-    public void modifyTaskPriority(int priority) {
+    public void modifyTaskStatus(int taskId, String status) {
+        Optional<Task> taskToUpdate = TASK.stream()
+                .filter(task -> task.getId() == taskId)
+                .findFirst();
 
-    }
-
-    @Override
-    public void modifyTaskStatus(String status) {
-
+        if (taskToUpdate.isPresent()) {
+            taskToUpdate.get().setStatus(status);
+        } else {
+            throw new NoSuchElementException("Task not found");
+        }
     }
 
     @Override
@@ -62,17 +72,7 @@ public class MockTaskRepository implements TaskRepository {
 
     @Override
     public void deleteTask(int taskId) {
-        var deleted = TASK.removeIf(element -> element.getId()==taskId);
-        if (deleted) {
-            log.info("Deleting task");
-        } else {
-            throw new NoSuchElementException();
-        }
-    }
-
-    @Override
-    public List<Task> viewTaskByUser(String username) {
-        return null;
+        TASK.removeIf(task -> task.getId() == taskId);
     }
 
     @Override

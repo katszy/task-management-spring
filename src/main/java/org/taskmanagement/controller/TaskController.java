@@ -1,76 +1,44 @@
 package org.taskmanagement.controller;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.taskmanagement.domain.Comment;
-import org.taskmanagement.domain.Task;
-import org.taskmanagement.domain.User;
 import org.taskmanagement.repository.TaskRepository;
-import org.taskmanagement.repository.UserRepository;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class TaskController {
-
-    public static class TaskCreationRequest {
-
-        TaskCreationRequest(){}
-        private Task task;
-        private List<String> usernames;
-        public Task getTask() {
-            return task;
-        }
-        public List<String> getUsernames() {
-            return usernames;
-        }
-    }
-
-
     private final TaskRepository taskRepository;
-    private final UserRepository userRepository;
-
-    private List<User> getUsers(List<String> usernames) {
-        List<User> users = new ArrayList<>();
-        for (String username : usernames) {
-            User user = userRepository.findByUsername(username);
-            if (user != null) {
-                users.add(user);
-            }
-        }
-        return users;
-    }
-
-    @PostMapping("/tasks/new")
-    public void createTask(@RequestBody TaskCreationRequest request) {
-        Task task = request.getTask();
-        List<String> usernames = request.getUsernames();
-
-        List<User> users = getUsers(usernames);
-        for (User user : users) {
-            user.addTaskToList(task);
-        }
-        taskRepository.createTask(task);
-    }
-
-    @DeleteMapping("/tasks/{taskId}/delete")
-    public void createTask(@PathVariable int taskId) {
-       taskRepository.deleteTask(taskId);
+    @GetMapping("tasks/{taskId}/comments")
+    public List<Comment> getComments(@PathVariable int taskId) {
+        log.trace("Calling GET /tasks/{taskId}/comments endpoint.");
+        List<Comment> comments = taskRepository.viewTaskComments(taskId);
+        return comments;
     }
 
     @PutMapping("tasks/{taskId}/comments")
     public void addComments(@PathVariable int taskId, @RequestBody Comment comment)
     {
+        log.trace("Calling PUT /tasks/{taskId}/comments endpoint.");
         taskRepository.addTaskComments(taskId,comment);
     }
 
-    @GetMapping("tasks/{taskId}/comments")
-    public List<Comment> getComments(@PathVariable int taskId) {
-        List<Comment> comments = taskRepository.viewTaskComments(taskId);
-        return comments;
+    @PutMapping("tasks/{taskId}/status")
+    public void modifyStatus(@PathVariable int taskId, @RequestBody Map<String, String> request) {
+        log.trace("Calling PUT /tasks/{taskId}/status endpoint.");
+        String newStatus = request.get("newStatus");
+        taskRepository.modifyTaskStatus(taskId, newStatus);
+    }
+
+    @PutMapping("tasks/{taskId}/priority")
+    public void modifyPriority(@PathVariable int taskId, @RequestBody int newPriority) {
+        log.trace("Calling PUT /tasks/{taskId}/priority endpoint.");
+        taskRepository.modifyTaskPriority(taskId, newPriority);
     }
 }
 

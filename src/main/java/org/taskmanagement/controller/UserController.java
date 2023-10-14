@@ -1,5 +1,4 @@
 package org.taskmanagement.controller;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -7,7 +6,7 @@ import org.taskmanagement.domain.Task;
 import org.taskmanagement.domain.User;
 import org.taskmanagement.repository.UserRepository;
 import java.util.List;
-//import static org.taskmanagement.repository.mocks.MockTaskRepository.TASK;
+
 
 @Slf4j
 @RestController
@@ -38,13 +37,13 @@ public class UserController {
         return userRepository.viewTasksByUser(username);
     }
 
+    //wtf is this?
     @PostMapping("/users/{username}/")
     public void assignTaskToUser(@PathVariable String username, @RequestBody Task task)
     {
         log.trace("Calling POST /users/{username} endpoint.");
         User user = userRepository.findByUsername(username);
         userRepository.assignTask(user,task);
-
     }
 
 }
