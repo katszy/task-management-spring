@@ -1,27 +1,34 @@
 package org.taskmanagement.domain;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import java.util.ArrayList;
+
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.util.List;
 
-@Data
+@Entity
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String username;
     private String email;
     private String password;
     private String role;
-    private ArrayList<Task> tasks;
 
-    public void addTaskToList(Task task) {
-        if (tasks == null) {
-            tasks = new ArrayList<>(List.of(task));
-        } else {
-            tasks.add(task);
-        }
-    }
+    @OneToMany(mappedBy = "user")
+    private List<Task> tasks;
 
+    @ManyToMany
+    @JoinTable(
+            name = "project_users",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id")
+    )
+    private List<Project> projects;
 }

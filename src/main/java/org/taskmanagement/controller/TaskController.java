@@ -14,6 +14,7 @@ import org.taskmanagement.repository.TaskRepository;
 @RequiredArgsConstructor
 public class TaskController {
     private final TaskRepository taskRepository;
+    /*
     @GetMapping("tasks/{taskId}/comments")
     public List<Comment> getComments(@PathVariable int taskId) {
         log.trace("Calling GET /tasks/{taskId}/comments endpoint.");
@@ -39,7 +40,7 @@ public class TaskController {
     public void modifyPriority(@PathVariable int taskId, @RequestBody int newPriority) {
         log.trace("Calling PUT /tasks/{taskId}/priority endpoint.");
         taskRepository.modifyTaskPriority(taskId, newPriority);
-    }
+    }*/
 }
 
 

@@ -1,27 +1,35 @@
 package org.taskmanagement.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Entity
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "tasks")
 public class Task {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String title;
     private LocalDate dueDate;
     private String status;
     private Integer priority;
-    private ArrayList<Comment> comments;
 
-    public void addComment(Comment comment) {
-        if (this.comments == null) {
-            this.comments = new ArrayList<>();
-        }
-        this.comments.add(comment);
-    }
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project project;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "task")
+    private List<Comment> comments;
 }

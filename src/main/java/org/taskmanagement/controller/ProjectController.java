@@ -18,7 +18,7 @@ public class ProjectController {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
-
+/*
     @PostMapping("/project/new")
     public void createProject(@RequestBody Project project)
     {
@@ -40,9 +40,9 @@ public class ProjectController {
 
         List<User> users = getUsers(usernames);
         for (User user : users) {
-            user.addTaskToList(task);
+           // user.addTaskToList(task);
         }
-        taskRepository.createTask(task);
+        //taskRepository.createTask(task);
         projectRepository.addTask(task,projectId);
     }
 
@@ -50,18 +50,19 @@ public class ProjectController {
     public void deleteTask(@PathVariable int projectId, @PathVariable int taskId) {
         log.trace("Calling DELETE //project/{projectId}/tasks/{taskId}/delete");
         projectRepository.deleteTask(taskId, projectId);
-        taskRepository.deleteTask(taskId);
+       // taskRepository.deleteTask(taskId);
     }
 
     private List<User> getUsers(List<String> usernames) {
         List<User> users = new ArrayList<>();
-        for (String username : usernames) {
-            User user = userRepository.findByUsername(username);
-            if (user != null) {
-                users.add(user);
-            }
-        }
-        return users;
+        //for (String username : usernames) {
+           // User user = userRepository.findByUsername(username);
+           // if (user != null) {
+            //    users.add(user);
+          //  }
+        //}
+        //TODO
+        return null;
     }
 
 
@@ -76,6 +77,6 @@ public class ProjectController {
             return usernames;
         }
     }
-
+*/
 }
 

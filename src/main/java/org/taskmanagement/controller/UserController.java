@@ -15,6 +15,7 @@ public class UserController {
 
     private final UserRepository userRepository;
 
+    /*
     @GetMapping("/users")
     public List<User> getUsers()
     {
@@ -45,5 +46,5 @@ public class UserController {
         User user = userRepository.findByUsername(username);
         userRepository.assignTask(user,task);
     }
-
+*/
 }
