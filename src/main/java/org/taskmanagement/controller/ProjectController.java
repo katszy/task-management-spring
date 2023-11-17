@@ -1,7 +1,9 @@
 package org.taskmanagement.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.taskmanagement.domain.Comment;
 import org.taskmanagement.domain.Project;
 import org.taskmanagement.domain.Task;
 import org.taskmanagement.domain.User;
@@ -10,14 +12,23 @@ import org.taskmanagement.repository.TaskRepository;
 import org.taskmanagement.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/project")
 public class ProjectController {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
+
+    @GetMapping("/all")
+    public List<Project> getAllProjects() {
+        return projectRepository.findAll();
+    }
+
+
 /*
     @PostMapping("/project/new")
     public void createProject(@RequestBody Project project)

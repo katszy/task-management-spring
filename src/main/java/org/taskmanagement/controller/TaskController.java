@@ -5,15 +5,57 @@ import java.util.List;
 import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.taskmanagement.controller.dto.TaskDto;
 import org.taskmanagement.domain.Comment;
+import org.taskmanagement.domain.Task;
+import org.taskmanagement.repository.ProjectRepository;
 import org.taskmanagement.repository.TaskRepository;
+import org.taskmanagement.repository.UserRepository;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/tasks")
 public class TaskController {
     private final TaskRepository taskRepository;
+    private final ProjectRepository projectRepository;
+    private final UserRepository userRepository;
+
+    @GetMapping("/all")
+    public List<Task> getAllTasks() {
+        return taskRepository.findAll();
+    }
+
+    @GetMapping("/by-project/{projectId}")
+    public ResponseEntity<List<Task>> getTasksByProjectId(@PathVariable Long projectId) {
+        List<Task> tasks = taskRepository.findByProjectId(projectId);
+        return ResponseEntity.ok(tasks);
+    }
+
+    @GetMapping("/by-user/{userId}")
+    public ResponseEntity<List<Task>> getTasksByUserId(@PathVariable Long userId) {
+        List<Task> tasks = taskRepository.findByProjectId(userId);
+        return ResponseEntity.ok(tasks);
+    }
+
+
+    @PostMapping("/new")
+    public ResponseEntity<Task> addTask(@RequestBody TaskDto taskDto) {
+        Task newTask = new Task();
+        newTask.setTitle(taskDto.getTitle());
+        newTask.setDueDate(taskDto.getDueDate());
+        newTask.setStatus(taskDto.getStatus());
+        newTask.setPriority(taskDto.getPriority());
+
+        projectRepository.findById(taskDto.getProjectId()).ifPresent(newTask::setProject);
+        userRepository.findById(taskDto.getUserId()).ifPresent(newTask::setUser);
+
+        Task savedTask = taskRepository.save(newTask);
+        return ResponseEntity.ok(savedTask);
+    }
+
     /*
     @GetMapping("tasks/{taskId}/comments")
     public List<Comment> getComments(@PathVariable int taskId) {

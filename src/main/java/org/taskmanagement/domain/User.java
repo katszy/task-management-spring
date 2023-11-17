@@ -1,5 +1,7 @@
 package org.taskmanagement.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,14 +23,16 @@ public class User {
     private String password;
     private String role;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<Task> tasks;
 
     @ManyToMany
     @JoinTable(
-            name = "project_users",
+            name = "project_user",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "project_id")
     )
+    @JsonBackReference
     private List<Project> projects;
 }

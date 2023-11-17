@@ -10,6 +10,9 @@ import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Integer> {
 
+    List<Task> findAll();
+    List<Task> findByProjectId(Long projectId);
+    List<Task> findByUserId(Long userId);
     /*void modifyTaskPriority(int taskId, int priority);
     void modifyTaskStatus(int taskId, String status);
     void createTask(Task task);

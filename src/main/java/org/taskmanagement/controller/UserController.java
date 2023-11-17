@@ -11,9 +11,13 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/users")
 public class UserController {
 
     private final UserRepository userRepository;
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
     /*
     @GetMapping("/users")
