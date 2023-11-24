@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
     List<Project> findAll();
+    Project findProjectById(Long id);
     /*List<Task> viewTasksByProject(int projectId);
     void createProject(Project project);
     void addTask(Task task, int ProjectId);

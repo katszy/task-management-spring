@@ -2,14 +2,18 @@ package org.taskmanagement.controller;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.taskmanagement.controller.dto.TaskDto;
-import org.taskmanagement.domain.Comment;
+import org.taskmanagement.controller.dto.TaskUpdateDto;
+import org.taskmanagement.domain.Project;
 import org.taskmanagement.domain.Task;
+import org.taskmanagement.domain.User;
+import org.taskmanagement.repository.CommentRepository;
 import org.taskmanagement.repository.ProjectRepository;
 import org.taskmanagement.repository.TaskRepository;
 import org.taskmanagement.repository.UserRepository;
@@ -22,6 +26,7 @@ public class TaskController {
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     @GetMapping("/all")
     public List<Task> getAllTasks() {
@@ -40,7 +45,6 @@ public class TaskController {
         return ResponseEntity.ok(tasks);
     }
 
-
     @PostMapping("/new")
     public ResponseEntity<Task> addTask(@RequestBody TaskDto taskDto) {
         Task newTask = new Task();
@@ -55,6 +59,57 @@ public class TaskController {
         Task savedTask = taskRepository.save(newTask);
         return ResponseEntity.ok(savedTask);
     }
+
+    @PutMapping("/update/{taskId}")
+    public ResponseEntity<Task> updateTask(@PathVariable int taskId, @RequestBody TaskUpdateDto taskUpdateDto) {
+        Optional<Task> taskOptional = taskRepository.findById(taskId);
+
+        if (taskOptional.isPresent()) {
+            Task task = taskOptional.get();
+            if (taskUpdateDto.getStatus() != null) {
+                task.setStatus(taskUpdateDto.getStatus());
+            }
+            if (taskUpdateDto.getPriority() != null) {
+                task.setPriority(taskUpdateDto.getPriority());
+            }
+
+            Task updatedTask = taskRepository.save(task);
+            return ResponseEntity.ok(updatedTask);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/delete/{taskId}")
+    @Transactional
+    public ResponseEntity<?> deleteTask(@PathVariable int taskId) {
+        Optional<Task> taskOptional = taskRepository.findById(taskId);
+
+        if (taskOptional.isPresent()) {
+            Task task = taskOptional.get();
+
+            // Deleting associated comments
+            commentRepository.deleteAll(task.getComments());
+
+            Project project = task.getProject();
+            User user = task.getUser();
+            if (project != null) {
+                // update project logic TODO
+            }
+            if (user != null) {
+                // update user logic TODO
+            }
+
+            // Finally, delete the task
+            taskRepository.delete(task);
+            return ResponseEntity.ok().build(); // You can also return a custom message if needed
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+
 
     /*
     @GetMapping("tasks/{taskId}/comments")
