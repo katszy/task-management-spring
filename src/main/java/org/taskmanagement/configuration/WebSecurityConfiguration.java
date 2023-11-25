@@ -18,6 +18,8 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.taskmanagement.repository.UserRepository;
+
 import static
         org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 import static
@@ -29,6 +31,7 @@ import static
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true,
         jsr250Enabled = true)
 public class WebSecurityConfiguration {
+    private final UserDetailsService customUserDetailsService;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws
             Exception {
@@ -53,6 +56,9 @@ public class WebSecurityConfiguration {
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder =
                 http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder
+                .userDetailsService(customUserDetailsService)
+                .passwordEncoder(passwordEncoder());
         authenticationManagerBuilder.inMemoryAuthentication()
                 .withUser("user")
                 .password(passwordEncoder().encode("user"))
@@ -63,4 +69,18 @@ public class WebSecurityConfiguration {
                 .roles("ADMIN", "USER");
         return authenticationManagerBuilder.build();
     }
+   /* @Bean
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.inMemoryAuthentication()
+                .withUser("user")
+                .password(passwordEncoder().encode("user"))
+                .roles("USER")
+                .and()
+                .withUser("admin")
+                .password(passwordEncoder().encode("admin"))
+                .roles("ADMIN", "USER");
+        return authenticationManagerBuilder.build();
+    }*/
 }
