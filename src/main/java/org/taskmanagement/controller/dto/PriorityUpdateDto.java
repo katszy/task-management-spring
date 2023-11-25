@@ -1,18 +1,12 @@
 package org.taskmanagement.controller.dto;
 
-public class TaskUpdateDto {
+public class PriorityUpdateDto {
     private Integer newPriority;
 
-    private String newStatus;
-    // Constructor, getters and setters
-    public TaskUpdateDto() {}
+    public PriorityUpdateDto() {}
 
     public Integer getNewPriority() {
         return newPriority;
-    }
-
-    public String getNewStatus() {
-        return newStatus;
     }
 
     public void setNewPriority(Integer newPriority) {

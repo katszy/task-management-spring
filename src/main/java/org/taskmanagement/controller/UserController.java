@@ -1,11 +1,15 @@
 package org.taskmanagement.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.taskmanagement.domain.Task;
 import org.taskmanagement.domain.User;
 import org.taskmanagement.repository.UserRepository;
+
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 
 @Slf4j
@@ -15,40 +19,35 @@ import java.util.List;
 public class UserController {
 
     private final UserRepository userRepository;
+
+    @GetMapping("/all")
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    /*
-    @GetMapping("/users")
-    public List<User> getUsers()
-    {
-        log.trace("Calling GET /users endpoint.");
-        List<User> users = userRepository.findAll();
-        return users;
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable int userId) {
+        //log.trace("Calling GET /users/{userId} endpoint.");
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (userOptional.isPresent()) {
+            return ResponseEntity.ok(userOptional.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @GetMapping("/users/{username}")
-    public User getUserByUsername(@PathVariable("username") String username)
-    {
-        log.trace("Calling GET /users/{username} endpoint.");
-        return userRepository.findByUsername(username);
+    @GetMapping("/{userId}/tasks")
+    public ResponseEntity<List<Task>> getUserTasks(@PathVariable int userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<Task> tasks = user.getTasks();
+            return ResponseEntity.ok(tasks != null ? tasks : Collections.emptyList());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @GetMapping("/users/{username}/tasks")
-    public List<Task> getTasksByUsername(@PathVariable("username") String username)
-    {
-        log.trace("Calling GET /users/{username}/tasks endpoint.");
-        return userRepository.viewTasksByUser(username);
-    }
-
-    //wtf is this?
-    @PostMapping("/users/{username}/")
-    public void assignTaskToUser(@PathVariable String username, @RequestBody Task task)
-    {
-        log.trace("Calling POST /users/{username} endpoint.");
-        User user = userRepository.findByUsername(username);
-        userRepository.assignTask(user,task);
-    }
-*/
 }
