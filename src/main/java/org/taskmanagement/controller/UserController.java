@@ -6,11 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import org.taskmanagement.domain.Task;
 import org.taskmanagement.domain.User;
 import org.taskmanagement.repository.UserRepository;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 
 @Slf4j
 @RestController
@@ -49,5 +47,4 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
-
 }

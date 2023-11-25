@@ -10,7 +10,6 @@ public class TaskDto {
     private int projectId;
     private int userId;
 
-    // Getters
     public String getTitle() {
         return title;
     }

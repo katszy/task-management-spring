@@ -20,9 +20,6 @@ import java.util.List;
 @RequestMapping("/comments")
 public class CommentController {
     private final CommentRepository commentRepository;
-    private final TaskRepository taskRepository;
-
-
     @GetMapping("/all")
     public List<Comment> getAllComments() {
         return commentRepository.findAll();

@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findAll();
-    // Additional custom methods can be declared here
 }

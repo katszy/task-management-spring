@@ -8,8 +8,4 @@ public class PriorityUpdateDto {
     public Integer getNewPriority() {
         return newPriority;
     }
-
-    public void setNewPriority(Integer newPriority) {
-        this.newPriority = newPriority;
-    }
 }

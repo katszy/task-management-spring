@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.taskmanagement.controller.dto.*;
 import org.taskmanagement.domain.Comment;
+import org.taskmanagement.domain.Project;
 import org.taskmanagement.domain.Task;
 import org.taskmanagement.repository.CommentRepository;
 import org.taskmanagement.repository.ProjectRepository;
@@ -32,6 +33,17 @@ public class TaskController {
         return taskRepository.findAll();
     }
 
+    @GetMapping("/{taskId}")
+    public ResponseEntity<Task> getProjectById(@PathVariable int taskId) {
+        Optional<Task> taskOptional = taskRepository.findById(taskId);
+
+        if (taskOptional.isPresent()) {
+            return ResponseEntity.ok(taskOptional.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/by-project/{projectId}")
     public ResponseEntity<List<Task>> getTasksByProjectId(@PathVariable Long projectId) {
         List<Task> tasks = taskRepository.findByProjectId(projectId);
@@ -51,9 +63,6 @@ public class TaskController {
         newTask.setDueDate(taskDto.getDueDate());
         newTask.setStatus(taskDto.getStatus());
         newTask.setPriority(taskDto.getPriority());
-
-        System.out.println("OK");
-
         projectRepository.findById(taskDto.getProjectId()).ifPresent(newTask::setProject);
         userRepository.findById(taskDto.getUserId()).ifPresent(newTask::setUser);
 
