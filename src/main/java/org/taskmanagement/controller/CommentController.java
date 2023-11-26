@@ -21,10 +21,10 @@ import java.util.List;
 public class CommentController {
     private final CommentRepository commentRepository;
     @GetMapping("/all")
-    public List<Comment> getAllComments() {
-        return commentRepository.findAll();
+    public ResponseEntity<List<Comment>> getAllComments() {
+        log.trace("Calling GET /comments/all endpoint.");
+        List<Comment> comments = commentRepository.findAll();
+        return ResponseEntity.ok(comments);
     }
-
-
 
 }

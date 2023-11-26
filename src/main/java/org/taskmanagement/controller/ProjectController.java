@@ -23,14 +23,16 @@ public class ProjectController {
     private final ProjectRepository projectRepository;
 
     @GetMapping("/all")
-    public List<Project> getAllProjects() {
-        return projectRepository.findAll();
+    public ResponseEntity<List<Project>> getAllProjects() {
+        log.trace("Calling GET /project/all endpoint.");
+        List<Project> projects = projectRepository.findAll();
+        return ResponseEntity.ok(projects);
     }
 
     @GetMapping("/{projectId}")
     public ResponseEntity<Project> getProjectById(@PathVariable int projectId) {
+        log.trace("Calling GET /project/{projectId}} endpoint.");
         Optional<Project> projectOptional = projectRepository.findById(projectId);
-
         if (projectOptional.isPresent()) {
             return ResponseEntity.ok(projectOptional.get());
         } else {
@@ -40,6 +42,7 @@ public class ProjectController {
 
     @PostMapping("/new")
     public ResponseEntity<Project> createProject(@RequestBody ProjectDto projectDto) {
+        log.trace("Calling POST /project/new endpoint.");
         Project project = projectDto.toEntity();
         Project savedProject = projectRepository.save(project);
         return ResponseEntity.ok(savedProject);
@@ -47,6 +50,7 @@ public class ProjectController {
 
     @GetMapping("/{projectId}/tasks")
     public ResponseEntity<List<Task>> getProjectTasks(@PathVariable int projectId) {
+        log.trace("Calling GET /project/{projectId}/tasks endpoint.");
         Optional<Project> projectOptional = projectRepository.findById(projectId);
 
         if (projectOptional.isPresent()) {

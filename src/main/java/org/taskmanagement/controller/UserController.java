@@ -19,13 +19,15 @@ public class UserController {
     private final UserRepository userRepository;
 
     @GetMapping("/all")
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public ResponseEntity<List<User>> getAllUsers() {
+        log.trace("Calling GET /users/all endpoint.");
+        List<User> users = userRepository.findAll();
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable int userId) {
-        //log.trace("Calling GET /users/{userId} endpoint.");
+        log.trace("Calling GET /users/{userId} endpoint.");
         Optional<User> userOptional = userRepository.findById(userId);
 
         if (userOptional.isPresent()) {
@@ -37,8 +39,8 @@ public class UserController {
 
     @GetMapping("/{userId}/tasks")
     public ResponseEntity<List<Task>> getUserTasks(@PathVariable int userId) {
+        log.trace("Calling GET /users/{userId}/tasks endpoint.");
         Optional<User> userOptional = userRepository.findById(userId);
-
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             List<Task> tasks = user.getTasks();
