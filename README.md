@@ -13,8 +13,8 @@ Task management backend app using Spring boot
 
 ### Application Setup
 - Clone this repository into a new folder on your system.
-- Open and run the application using IntelliJ IDEA.
+- Open and run the application using IntelliJ IDEA. Make sure to enable lombok annotations.
 
 ## Running the Application
 Once the setup is complete, you can launch the Task Management App. The server is accessible at http://localhost:8080/${desiredLocation}. 
-For testing and interacting with the API, a Postman collection is included.
+For testing and interacting with the API, a Postman collection is included. //TODO
