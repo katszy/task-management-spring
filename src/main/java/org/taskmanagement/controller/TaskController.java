@@ -32,7 +32,7 @@ public class TaskController {
 
     @GetMapping("/all")
     public ResponseEntity<List<Task>> getAllTasks() {
-        log.trace("Calling GET /tasks/all endpoint.");
+        log.info("Calling GET /tasks/all endpoint.");
         List<Task> tasks = taskRepository.findAll();
         return ResponseEntity.ok(tasks);
     }
@@ -42,7 +42,7 @@ public class TaskController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size
     ) {
-        log.trace("Calling GET /tasks/all2 endpoint.");
+        log.info("Calling GET /tasks/all2 endpoint.");
         PageRequest pageable = PageRequest.of(page, size, Sort.by("title").ascending());
         Page<Task> tasks = taskRepository.findAll(pageable);
         return ResponseEntity.ok(tasks);
@@ -50,7 +50,7 @@ public class TaskController {
 
     @GetMapping("/{taskId}")
     public ResponseEntity<Task> getProjectById(@PathVariable int taskId) {
-        log.trace("Calling GET /tasks/{taskID} endpoint.");
+        log.info("Calling GET /tasks/{taskID} endpoint.");
         Optional<Task> taskOptional = taskRepository.findById(taskId);
 
         if (taskOptional.isPresent()) {
@@ -62,21 +62,21 @@ public class TaskController {
 
     @GetMapping("/by-project/{projectId}")
     public ResponseEntity<List<Task>> getTasksByProjectId(@PathVariable Long projectId) {
-        log.trace("Calling GET /tasks/by-project/{projectId} endpoint.");
+        log.info("Calling GET /tasks/by-project/{projectId} endpoint.");
         List<Task> tasks = taskRepository.findByProjectId(projectId);
         return ResponseEntity.ok(tasks);
     }
 
     @GetMapping("/by-user/{userId}")
     public ResponseEntity<List<Task>> getTasksByUserId(@PathVariable Long userId) {
-        log.trace("Calling GET /tasks/by-user/{userId} endpoint.");
+        log.info("Calling GET /tasks/by-user/{userId} endpoint.");
         List<Task> tasks = taskRepository.findByUserId(userId);
         return ResponseEntity.ok(tasks);
     }
 
     @PostMapping("/new")
     public ResponseEntity<Task> addTask(@RequestBody TaskDto taskDto) {
-        log.trace("Calling POST /tasks/new endpoint.");
+        log.info("Calling POST /tasks/new endpoint.");
         Task newTask = new Task();
         newTask.setTitle(taskDto.getTitle());
         newTask.setDueDate(taskDto.getDueDate());
@@ -91,7 +91,7 @@ public class TaskController {
 
     @PutMapping("/{taskId}/update/priority")
     public ResponseEntity<Task> updateTaskPriority(@PathVariable int taskId, @RequestBody PriorityUpdateDto taskUpdateDto) {
-        log.trace("Calling PUT /tasks/{taskId}/update/priority endpoint.");
+        log.info("Calling PUT /tasks/{taskId}/update/priority endpoint.");
         Optional<Task> taskOptional = taskRepository.findById(taskId);
         if (taskOptional.isPresent()) {
             Task task = taskOptional.get();
@@ -106,7 +106,7 @@ public class TaskController {
     @PutMapping("/{taskId}/update/status")
     public ResponseEntity<Task> updateTaskStatus(@PathVariable int taskId, @RequestBody StatusUpdateDto taskUpdateDto) {
 
-        log.trace("Calling PUT /tasks//{taskId}/update/status endpoint");
+        log.info("Calling PUT /tasks//{taskId}/update/status endpoint");
         Optional<Task> taskOptional = taskRepository.findById(taskId);
         if (taskOptional.isPresent()) {
             Task task = taskOptional.get();
@@ -122,7 +122,7 @@ public class TaskController {
     @Transactional
     public ResponseEntity<?> deleteTask(@PathVariable int taskId) {
 
-        log.trace("Calling DELETE /tasks//{taskId} endpoint");
+        log.info("Calling DELETE /tasks//{taskId} endpoint");
         Optional<Task> taskOptional = taskRepository.findById(taskId);
 
         if (taskOptional.isPresent()) {
@@ -139,7 +139,7 @@ public class TaskController {
     @GetMapping("/{taskId}/comments")
     public ResponseEntity<List<Comment>> viewComments(@PathVariable int taskId) {
 
-        log.trace("Calling GET /tasks/{taskId}/comments endpoint");
+        log.info("Calling GET /tasks/{taskId}/comments endpoint");
         Optional<Task> taskOptional = taskRepository.findById(taskId);
 
         if (taskOptional.isPresent()) {
@@ -155,7 +155,7 @@ public class TaskController {
     @PostMapping("/{taskId}/new-comment")
     public ResponseEntity<Comment> addCommentToTask(@PathVariable int taskId, @RequestBody CommentDto commentDto) {
 
-        log.trace("Calling POST /tasks/{taskId}/new-comment endpoint");
+        log.info("Calling POST /tasks/{taskId}/new-comment endpoint");
         Optional<Task> taskOptional = taskRepository.findById(taskId);
 
         if (taskOptional.isPresent()) {

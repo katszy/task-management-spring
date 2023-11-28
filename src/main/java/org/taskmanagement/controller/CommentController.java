@@ -22,7 +22,7 @@ public class CommentController {
     private final CommentRepository commentRepository;
     @GetMapping("/all")
     public ResponseEntity<List<Comment>> getAllComments() {
-        log.trace("Calling GET /comments/all endpoint.");
+        log.info("Calling GET /comments/all endpoint.");
         List<Comment> comments = commentRepository.findAll();
         return ResponseEntity.ok(comments);
     }

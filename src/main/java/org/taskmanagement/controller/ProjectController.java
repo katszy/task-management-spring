@@ -6,10 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.taskmanagement.controller.dto.ProjectDto;
 import org.taskmanagement.domain.Project;
 import org.taskmanagement.domain.Task;
-import org.taskmanagement.domain.User;
 import org.taskmanagement.repository.ProjectRepository;
-import org.taskmanagement.repository.TaskRepository;
-import org.taskmanagement.repository.UserRepository;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,14 +21,14 @@ public class ProjectController {
 
     @GetMapping("/all")
     public ResponseEntity<List<Project>> getAllProjects() {
-        log.trace("Calling GET /project/all endpoint.");
+        log.info("Calling GET /project/all endpoint.");
         List<Project> projects = projectRepository.findAll();
         return ResponseEntity.ok(projects);
     }
 
     @GetMapping("/{projectId}")
     public ResponseEntity<Project> getProjectById(@PathVariable int projectId) {
-        log.trace("Calling GET /project/{projectId}} endpoint.");
+        log.info("Calling GET /project/{projectId}} endpoint.");
         Optional<Project> projectOptional = projectRepository.findById(projectId);
         if (projectOptional.isPresent()) {
             return ResponseEntity.ok(projectOptional.get());
@@ -42,7 +39,7 @@ public class ProjectController {
 
     @PostMapping("/new")
     public ResponseEntity<Project> createProject(@RequestBody ProjectDto projectDto) {
-        log.trace("Calling POST /project/new endpoint.");
+        log.info("Calling POST /project/new endpoint.");
         Project project = projectDto.toEntity();
         Project savedProject = projectRepository.save(project);
         return ResponseEntity.ok(savedProject);
@@ -50,7 +47,7 @@ public class ProjectController {
 
     @GetMapping("/{projectId}/tasks")
     public ResponseEntity<List<Task>> getProjectTasks(@PathVariable int projectId) {
-        log.trace("Calling GET /project/{projectId}/tasks endpoint.");
+        log.info("Calling GET /project/{projectId}/tasks endpoint.");
         Optional<Project> projectOptional = projectRepository.findById(projectId);
 
         if (projectOptional.isPresent()) {
